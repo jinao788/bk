@@ -1,0 +1,133 @@
+{include file='public/header'}
+    <body>
+        <div class="x-body">
+            <form class="layui-form">
+             <input type="hidden" name="id" value="{$conf.id}">
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">
+                        <span class="x-red">*</span>配置中文名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="" name="cnname" required="" lay-verify=""
+                        autocomplete="off" class="layui-input" style="width:500px;" value="{$conf.cnname}">
+                    </div>
+
+                </div>
+                   
+
+
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">
+                        <span class="x-red">*</span>配置英文名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="" name="enname" required="" lay-verify=""
+                        autocomplete="off" class="layui-input" style="width:500px" value="{$conf.enname}">
+                    </div>
+                </div>    
+
+              
+                <div class="layui-form-item">
+                    <label for="type" class="layui-form-label">
+                        <span class="x-red">*</span>配置类型
+                    </label>
+                    <div class="layui-input-inline">
+                      <select name="type">
+                            <option {if condition="$conf['type'] eq 1"} selected="selected" {/if} value="1">单行文本</option>
+                            <option {if condition="$conf['type'] eq 2"} selected="selected" {/if} value="2">多行文本域</option>
+                            <option {if condition="$conf['type'] eq 3"} selected="selected" {/if} value="3">单选按钮</option>
+                            
+                            <option {if condition="$conf['type'] eq 5"} selected="selected" {/if} value="5">下拉列表</option>
+                      </select>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red"></span>可选值
+                    </label>
+                    <div class="layui-input-inline" >
+                        <textarea style="width:500px;height:100px;"  type="text" id="" name="values" 
+                        autocomplete="off" class="layui-input" >{$conf.values}</textarea>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" lay-filter="add" lay-submit="">
+                        修改
+                    </button>
+                </div>
+            </form>
+        </div>
+{include file='public/base_js'}  
+        <script>
+            layui.use(['form','layer'], function(){
+                $ = layui.jquery;
+              var form = layui.form()
+              ,layer = layui.layer;
+            
+              //自定义验证规则
+              form.verify({
+                nikename: function(value){
+                  if(value.length < 5){
+                    return '昵称至少得5个字符啊';
+                  }
+                }
+                ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+                ,repass: function(value){
+                    if($('#L_pass').val()!=$('#L_repass').val()){
+                        return '两次密码不一致';
+                    }
+                }
+              });
+
+              //监听提交
+             form.on('submit(add)', function(data){
+                    console.log(data);
+                    //发异步，把数据提交给php
+                        $.ajax({
+                                type: 'POST',
+                                url: "{:url('conf/update')}",
+                                data: $(".layui-form").serialize(),
+                                dataType: "json",
+
+                                success: function(data){
+                                    if (data.status == 1) {
+
+                                       layer.alert(data.message,{icon: 6},function(){
+                                        //三个参数,消息,样式,回调点击关闭事件
+                                        var index = parent.layer.getFrameIndex(window.name);
+                                        parent.layer.close(index);
+                                        });
+                                        //若未点击,自动消失  //还需要优化最后刷新整个页面
+                                        setTimeout(function () {
+                                           var index = parent.layer.getFrameIndex(window.name);
+                                           parent.layer.close(index);
+                                        },1000);
+                                       
+                                    }else {
+                                          layer.alert(data.message,{icon: 5});
+                                    
+                                 
+                                    
+                                    }
+                                }
+                        });
+
+                  
+                    return false;
+                });
+              
+              
+            });
+        </script>
+        
+    </body>
+
+</html>

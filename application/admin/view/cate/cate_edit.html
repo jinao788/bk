@@ -1,0 +1,204 @@
+{include file='public/header'}
+    
+    <body>
+        <div class="x-body">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label for="cname" class="layui-form-label">
+                        ID
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="cname" name="cate_id" required="" lay-verify="required"
+                        autocomplete="off"   value="{$cate_now.cate_id}" disabled="" class="layui-input">
+                        <input type="hidden" name="cate_id" value="{$cate_now.cate_id}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="cname" class="layui-form-label">
+                        <span class="x-red">*</span>分类名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="cname" name="cate_name" required="" lay-verify="required"
+                        autocomplete="off" class="layui-input" value="{$cate_now.cate_name}"> 
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">栏目类型</label>
+                    <div class="layui-input-inline" >
+                        <select name="type">
+                            
+
+                           
+                            <!--将当前分类置为选中状态-->
+                            {eq name='$cate_now.type' value='1'}
+                            <option value=1 selected>文章列表</option>
+                            <option value=2 >单页</option>
+                            <option value=3 >图片列表</option>
+                            {/eq}
+                            {eq name='$cate_now.type' value='2'}
+                            <option value=1 >文章列表</option>
+                            <option value=2 selected>单页</option>
+                            <option value=3 >图片列表</option>
+                            {/eq}
+                            {eq name='$cate_now.type' value='3'}
+                            <option value=1 >文章列表</option>
+                            <option value=2 >单页</option>
+                            <option value=3 selected>图片列表</option>
+                            {/eq}
+                            
+
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属分类</label>
+                    <div class="layui-input-inline" >
+                        <select name="pid" disabled="">
+                            <option value="0">顶级分类</option>
+
+                            {volist name='cate_level' id='vo'}
+                            <!--将当前分类置为选中状态-->
+                            {eq name='$cate_now.pid' value='$vo.cate_id'}
+                            <option value="{$vo.cate_id}" selected >{$vo.cate_name}</option>
+                            {else /}
+                            <option value="{$vo.cate_id}" >{$vo.cate_name}</option>
+                            {/eq}
+                            {/volist}
+
+                        </select>
+                    </div>
+                </div>
+                
+
+                 <div class="layui-form-item">
+                    <label for="link" class="layui-form-label">
+                        <span class="x-red"></span>推荐到首页
+                    </label>
+                    <div class="layui-input-block">
+                    <input name="rec_index" value="1" {if condition="$cate_now.rec_index eq '1'"} checked="checked" {/if} title="是" type="radio"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>是</span></div>
+                    <input name="rec_index" value="2" {if condition="$cate_now.rec_index eq '2'"} checked="checked" {/if} title="否"  type="radio"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><span>否</span></div>
+                  </div>
+                </div>
+
+                 <div class="layui-form-item">
+                    <label for="link" class="layui-form-label">
+                        <span class="x-red"></span>推荐到底部
+                    </label>
+                    <div class="layui-input-block">
+                    <input name="rec_bottom" value="1" {if condition="$cate_now.rec_bottom eq '1'"} checked="checked" {/if} title="是" type="radio"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>是</span></div>
+                    <input name="rec_bottom" value="2" {if condition="$cate_now.rec_bottom eq '2'"} checked="checked" {/if} title="否"  type="radio"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><span>否</span></div>
+                  </div>
+                </div>
+
+
+                
+
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">
+                        <span class="x-red"></span>栏目关键词
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="" name="keywords" required="" lay-verify=""
+                        autocomplete="off" class="layui-input" style="width:500px" value="{$cate_now.keywords}">
+                    </div>
+                </div>    
+
+                
+                <div class="layui-form-item">
+                    <label for="link" class="layui-form-label" >
+                        <span class="x-red"></span>栏目描述
+                    </label>
+                    <div class="layui-input-inline">
+                        
+                        <input type="text" id="" name="desc" 
+                        autocomplete="off" class="layui-input" style="width:500px" value="{$cate_now.desc}">
+                    </div>
+                </div>
+
+                {if condition="$cate_now.type eq 2"}
+                <div class="layui-form-item">
+                    <label for="link" class="layui-form-label" >
+                        <span class="x-red"></span>栏目内容
+                    </label>
+                    <div class="layui-input-inline">
+                        
+                        <textarea  id="content" name="content" 
+                        autocomplete="off"  style="width:500px" value=""> {$cate_now.content} </textarea>
+                    </div>
+                </div>
+                {/if}
+
+
+                
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" lay-filter="save" lay-submit="">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+        <script src="__STATIC_A__/lib/layui/layui.js" charset="utf-8">
+        </script>
+        <script src="__STATIC_A__/js/x-layui.js" charset="utf-8">
+        </script>
+        <script src="__STATIC_A__/ueditor/ueditor.config.js" charset="utf-8"></script>
+        <script src="__STATIC_A__/ueditor/lang/zh-cn/zh-cn.js" charset="utf-8"></script>
+        <script src="__STATIC_A__/ueditor/ueditor.all.min.js" charset="utf-8"></script>
+        <script>
+            layui.use(['form','layer'], function(){
+                $ = layui.jquery;
+              var form = layui.form()
+              ,layer = layui.layer;
+            
+
+              //监听提交
+              form.on('submit(save)', function(data){
+                console.log(data);
+                //发异步，把数据提交给php
+                $.post("{:url('update')}", data.field, function (res) {
+                    if (res.status == 1) {
+                        layer.alert(res.message, {icon: 6},function () {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                        });
+                        //若未点击,自动消失  //还需要优化最后刷新整个页面
+                              setTimeout(function () {
+                                 var index = parent.layer.getFrameIndex(window.name);
+                                 parent.layer.close(index);
+                              },1000);
+                    }else {
+
+                        layer.alert(res.message, {icon: 5});
+
+                                 
+
+                    }
+                      
+                });
+                return false;
+
+              });
+              
+              
+            });
+        </script>
+<script type="text/javascript">
+
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    UE.getEditor('content',{initialFrameWidth:500,initialFrameHeight:200,});
+    
+
+
+</script>
+      
+    </body>
+
+</html>
